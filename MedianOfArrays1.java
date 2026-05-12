@@ -1,4 +1,4 @@
-public class MedianOfArrays {
+public class MedianOfArrays1 {
     static void main(String[] args) {
 int [] nums1 = {1 , 2};
 int [] nums2 = {5};
