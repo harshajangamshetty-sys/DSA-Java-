@@ -3,11 +3,13 @@ import java.util.Arrays;
 public class kunal {
     public static void main(String[] args) {
         int[][] arr = {
-                {1, 2, 3},
-                {4, 5, 6},
-                {7, 8, 9}
+                { 2, 5},
+                {2 , 8},
+                {7, 9},
+                {7 , 11},
+                {9 , 11}
         };
-        System.out.println(Arrays.toString(search(arr, 9)));
+        System.out.println(Arrays.toString(search(arr, 7)));
     }
     // search in the row provided between the cols provided
     static int[] binarySearch(int[][] matrix, int row, int cStart, int cEnd, int target) {
