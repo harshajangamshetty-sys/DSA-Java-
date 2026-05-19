@@ -1,5 +1,5 @@
 class solution {
-    public int getCommon(int[] nums1, int[] nums2) {
+    public static int getCommon(int[] nums1, int[] nums2) {
         int i = 0, j = 0;
 
         while (i < nums1.length && j < nums2.length) {
@@ -9,5 +9,11 @@ class solution {
         }
 
         return -1;
+    }
+
+    static void main(String[] args) {
+        int[] nums1 = {1 , 2 ,3 ,4};
+        int[] nums2 = {2 , 3 ,4};
+        System.out.println(getCommon(nums1 , nums2));
     }
 }
