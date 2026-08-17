@@ -11,36 +11,39 @@
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
         
-        ListNode checker = head;
-        int count = 0;
+        ListNode dummy = new ListNode (0 , head);
+        ListNode first = dummy;
 
-        while(count < k) {
-            if(checker == null) {
-                return head;
+        while(true) {
+            ListNode kth = getK(first , k);
+            if(kth == null) {
+                break;
+            }
+                ListNode nextgrp = kth.next;
+            
+            ListNode cur = first.next;
+            ListNode prev = kth.next;
+
+            while(cur != nextgrp) {
+                ListNode temp = cur.next;
+                cur.next = prev;
+                prev = cur;
+                cur = temp;
             }
 
-            checker = checker.next;
-            count ++;
+            ListNode temp = first.next;
+            first.next = kth;
+            first = temp;
         }
-        ListNode groupEnd = checker;
-
-        ListNode newNode = reverseList(head , groupEnd);
-        head.next = reverseKGroup(groupEnd , k);
-
-        return newNode;
+        return dummy.next;
     }
 
-       public ListNode  reverseList(ListNode head , ListNode groupEnd) {
-        ListNode cur = head;
-        ListNode prev = null;
-
-        while(cur != groupEnd) {
-           ListNode temp = cur.next;
-           cur.next = prev;
-           prev = cur;
-           cur = temp;
+        public ListNode getK(ListNode checker , int k) {
+            int count = 0;
+            while(checker != null && count < k) {
+                checker = checker.next;
+                count ++;
+            }
+            return checker;
         }
-        return prev;
-       }
 }
-    
