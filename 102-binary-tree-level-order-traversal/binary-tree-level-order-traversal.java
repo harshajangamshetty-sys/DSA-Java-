@@ -28,9 +28,9 @@ class Solution {
             int size = queue.size();
 
             List<Integer> list = new ArrayList<>();
-
             for (int i = 0; i < size; i++) {
                 TreeNode node = queue.poll();
+
                 list.add(node.val);
 
                 if (node.left != null) {
@@ -39,11 +39,9 @@ class Solution {
                 if (node.right != null) {
                     queue.offer(node.right);
                 }
-
             }
             result.add(list);
         }
         return result;
     }
-
 }
