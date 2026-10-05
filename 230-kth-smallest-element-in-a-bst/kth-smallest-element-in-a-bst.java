@@ -14,27 +14,29 @@
  * }
  */
 class Solution {
-    int counter = 0;
     int answer = 0;
+    int counter = 0;
     int k;
     public int kthSmallest(TreeNode root, int k) {
         this.k = k;
         dfs(root);
-    return answer;
-        
+        return answer;
     }
-
 
     public void dfs(TreeNode node) {
         if(node == null) {
             return;
         }
+
         dfs(node.left);
-        counter ++;
+
+        counter++;
+
         if(counter == k) {
             answer = node.val;
+            return;
         }
 
         dfs(node.right);
-    } 
+    }
 }
