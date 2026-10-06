@@ -35,14 +35,15 @@ public class Codec {
         return buildTree(split[pos]); 
     }
     public TreeNode buildTree(String str) {
+        pos++;
         if(str.equals("#")) {
             return null;
         }
         int token = Integer.parseInt(str);
         TreeNode root = new TreeNode(token);
-        pos++;
+
         root.left = buildTree(split[pos]);
-        pos++;
+
         root.right = buildTree(split[pos]);
 
         return root;
