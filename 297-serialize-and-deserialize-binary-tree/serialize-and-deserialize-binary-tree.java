@@ -8,46 +8,51 @@
  * }
  */
 public class Codec {
-        StringBuilder ser = new StringBuilder();
-        int pos;
-        String [] split;
+
+    StringBuilder builder;
+    int pos;
+    String [] split;
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-        ser = new StringBuilder();
+        builder = new StringBuilder ();
         buildString(root);
-        return ser.toString();
+        return builder.toString();
     }
+
     public void buildString(TreeNode node) {
         if(node == null) {
-            ser.append("#,");
+            builder.append("#,");
             return;
         }
+        builder.append(node.val + ",");
 
-        ser.append(node.val +",");
         buildString(node.left);
         buildString(node.right);
     }
-
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-         split = data.split(",");
+        split = data.split(",");
         pos = 0;
-        return buildTree(); 
+        return buildTree();
     }
+
     public TreeNode buildTree() {
         String str = split[pos];
-        pos++;
+        
         if(str.equals("#")) {
             return null;
         }
+
         int token = Integer.parseInt(str);
         TreeNode root = new TreeNode(token);
-        
+
+        pos++;
         root.left = buildTree();
+        pos++;
         root.right = buildTree();
 
         return root;
-    }
+    } 
 }
 
 // Your Codec object will be instantiated and called as such:
