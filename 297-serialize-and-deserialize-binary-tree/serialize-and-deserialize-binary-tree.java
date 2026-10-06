@@ -32,19 +32,19 @@ public class Codec {
     public TreeNode deserialize(String data) {
          split = data.split(",");
         pos = 0;
-        return buildTree(split[pos]); 
+        return buildTree(); 
     }
-    public TreeNode buildTree(String str) {
+    public TreeNode buildTree() {
+        String str = split[pos];
         pos++;
         if(str.equals("#")) {
             return null;
         }
         int token = Integer.parseInt(str);
         TreeNode root = new TreeNode(token);
-
-        root.left = buildTree(split[pos]);
-
-        root.right = buildTree(split[pos]);
+        
+        root.left = buildTree();
+        root.right = buildTree();
 
         return root;
     }
