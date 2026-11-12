@@ -1,59 +1,69 @@
-class Solution {
-    boolean [][] visit;
-    Set<String> res;
-    public List<String> findWords(char[][] board, String[] words) {
-        TreeNode root = new TreeNode();
-        for(String word : words) {
-            root.addWord(word);
-        }
-        res = new HashSet<>();
-        visit = new boolean [board.length][board[0].length];
+class TrieNode {
+    TrieNode[] children = new TrieNode[26];
+    int idx = -1;
+    int refs = 0;
 
-        for(int r = 0; r < board.length; r ++) {
-            for(int c = 0; c < board[0].length; c ++) {
-                dfs(board , "" , r , c , root);
+    public void addWord(String word, int i) {
+        TrieNode cur = this;
+        cur.refs++;
+        for (char c : word.toCharArray()) {
+            int index = c - 'a';
+            if (cur.children[index] == null) {
+                cur.children[index] = new TrieNode();
             }
+            cur = cur.children[index];
+            cur.refs++;
         }
-        return new ArrayList<>(res);
+        cur.idx = i;
     }
-        
-        
-        public void  dfs(char [][] board , String word , int i , int j , TreeNode node) {
-            if(i >= board.length || j >= board[0].length || i < 0 || j < 0 || visit[i][j] || !node.children.containsKey(board[i][j])) {
-                return;
-            }
-
-            visit[i][j] = true;
-            word += board[i][j];
-            node = node.children.get(board[i][j]);
-            if(node.isWord) {
-                res.add(word);
-            }
-
-            dfs(board , word , i + 1 , j , node);
-            dfs(board , word , i - 1 , j , node);
-            dfs(board , word , i , j + 1 , node);
-            dfs(board , word , i , j - 1 , node);
-
-            visit[i][j] = false;
-        }
 }
 
-class TreeNode {
-    Map<Character , TreeNode> children;
-    boolean isWord;
+public class Solution {
+    List<String> res = new ArrayList<>();
 
-    public TreeNode () {
-        children = new HashMap<>();
-        isWord = false;
+    public List<String> findWords(char[][] board, String[] words) {
+        TrieNode root = new TrieNode();
+        for (int i = 0; i < words.length; i++) {
+            root.addWord(words[i], i);
+        }
+
+        for (int r = 0; r < board.length; r++) {
+            for (int c = 0; c < board[0].length; c++) {
+                root.refs -= dfs(board, root, r, c, words);
+            }
+        }
+
+        return res;
     }
 
-    public void addWord(String word) {
-        TreeNode cur = this;
-        for(char c : word.toCharArray()) {
-            cur.children.putIfAbsent(c , new TreeNode());
-            cur = cur.children.get(c);
+    private int dfs(char[][] board, TrieNode node, int r, int c, String[] words) {
+        if (r < 0 || c < 0 || r >= board.length ||
+            c >= board[0].length || board[r][c] == '*' ||
+            node.children[board[r][c] - 'a'] == null) {
+            return 0;
         }
-        cur.isWord = true;
+
+        char temp = board[r][c];
+        board[r][c] = '*';
+        TrieNode prev = node;
+        node = node.children[temp - 'a'];
+        int found = 0;
+        if (node.idx != -1) {
+            res.add(words[node.idx]);
+            node.idx = -1;
+            found++;
+        }
+
+        found += dfs(board, node, r + 1, c, words);
+        found += dfs(board, node, r - 1, c, words);
+        found += dfs(board, node, r, c + 1, words);
+        found += dfs(board, node, r, c - 1, words);
+
+        board[r][c] = temp;
+        node.refs -= found;
+        if (node.refs == 0) {
+            prev.children[temp - 'a'] = null;
+        }
+        return found;
     }
 }
