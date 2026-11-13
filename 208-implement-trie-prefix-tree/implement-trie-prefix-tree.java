@@ -1,50 +1,53 @@
 class Trie {
-    private TreeNode root;
+
+    TreeNode root;
 
     public Trie() {
-        root = new TreeNode ();
+        root = new TreeNode();
     }
     
     public void insert(String word) {
         TreeNode cur = root;
         for(char c : word.toCharArray()) {
-            int i = c - 'a';
-            if(cur.children[i] == null) {
-                cur.children[i] = new TreeNode();
+            if(cur.children[c - 'a'] == null) {
+                cur.children[c - 'a'] = new TreeNode();
             }
-            cur = cur.children[i];
+            cur = cur.children[c - 'a'];
         }
-        cur.endOfWord = true;
+        cur.isWord = true;
     }
     
     public boolean search(String word) {
         TreeNode cur = root;
         for(char c : word.toCharArray()) {
-            int i = c - 'a';
-            if(cur.children[i] == null) {
+            if(cur.children[c - 'a'] == null) {
                 return false;
             }
-            cur = cur.children[i];
+            cur = cur.children[c - 'a'];
         }
-            return cur.endOfWord;
+        return cur.isWord;
     }
     
     public boolean startsWith(String prefix) {
         TreeNode cur = root;
         for(char c : prefix.toCharArray()) {
-            int i = c - 'a';
-            if(cur.children[i] == null) {
+            if(cur.children[c - 'a'] == null) {
                 return false;
             }
-            cur = cur.children[i];
+            cur = cur.children[c - 'a'];
         }
         return true;
     }
 }
 
-public class TreeNode {
-    TreeNode [] children = new TreeNode[26];
-    boolean endOfWord = false;
+class TreeNode {
+    TreeNode [] children;
+    boolean isWord;
+
+    public TreeNode () {
+        children = new TreeNode [26];
+        isWord = false;
+    }
 }
 
 /**
